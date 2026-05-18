@@ -6,7 +6,7 @@ import { ContentImage } from "@/components/shared/content-image";
 import { TaskPostCard } from "@/components/shared/task-post-card";
 import { ShareButton } from "@/components/shared/share-button";
 import { FollowButton } from "@/components/shared/follow-button";
-import { Button } from "@/components/ui/button";
+import { RichContent, formatRichHtml } from "@/components/shared/rich-content";
 import { SchemaJsonLd } from "@/components/seo/schema-jsonld";
 import { buildPostUrl } from "@/lib/task-data";
 import { buildPostMetadata, buildTaskMetadata } from "@/lib/seo";
@@ -15,33 +15,6 @@ import { SITE_CONFIG } from "@/lib/site-config";
 import { ExternalLink } from "lucide-react";
 
 export const revalidate = 3;
-
-const escapeHtml = (value: string) =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-
-const sanitizeRichHtml = (html: string) =>
-  html
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, "")
-    .replace(/<object[^>]*>[\s\S]*?<\/object>/gi, "")
-    .replace(/\son[a-z]+\s*=\s*(['"]).*?\1/gi, "")
-    .replace(/\shref\s*=\s*(['"])javascript:.*?\1/gi, ' href="#"');
-
-const formatRichHtml = (raw?: string | null, fallback = "Profile details will appear here once available.") => {
-  const source = typeof raw === "string" ? raw.trim() : "";
-  if (!source) return `<p>${escapeHtml(fallback)}</p>`;
-  if (/<[a-z][\s\S]*>/i.test(source)) return sanitizeRichHtml(source);
-  return source
-    .split(/\n{2,}/)
-    .map((paragraph) => `<p>${escapeHtml(paragraph.replace(/\n/g, " ").trim())}</p>`)
-    .join("");
-};
 
 export async function generateStaticParams() {
   const posts = await fetchTaskPosts("profile", 50);
@@ -81,7 +54,11 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
     (content.description as string | undefined) ||
     post.summary ||
     "Profile details will appear here once available.";
-  const descriptionHtml = formatRichHtml(description);
+  const about = content.about as string | undefined;
+  const aboutHtml = formatRichHtml(
+    about || description,
+    "No about information available.",
+  );
   const suggestedArticles = await fetchTaskPosts("article", 6);
   const baseUrl = SITE_CONFIG.baseUrl.replace(/\/$/, "");
   const breadcrumbData = {
@@ -163,6 +140,11 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
           
           {/* Sidebar Uploads */}
           <aside className="space-y-6">
+            {/* About Section */}
+            <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground mb-4">About</h2>
+              <RichContent html={aboutHtml} className="text-sm text-muted-foreground prose-p:my-2" />
+            </div>
             <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
               <h2 className="text-lg font-semibold text-foreground mb-4">Uploads</h2>
               <div className="space-y-3">
