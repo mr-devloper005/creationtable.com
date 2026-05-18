@@ -5,55 +5,23 @@ import { PdfProfileLanding } from '@/components/home/pdf-profile-landing'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { fetchTaskPosts } from '@/lib/task-data'
 import type { SitePost } from '@/lib/site-connector'
-import type { TaskKey } from '@/lib/site-config'
 
 export const HOME_PAGE_OVERRIDE_ENABLED = true
 
-type PostWithTask = { post: SitePost; task: TaskKey }
-
-function mergeFeatured(pdfPosts: SitePost[], profilePosts: SitePost[]): PostWithTask[] {
-  const out: PostWithTask[] = []
-  const max = 4
-  let i = 0
-  let j = 0
-  while (out.length < max && (i < pdfPosts.length || j < profilePosts.length)) {
-    if (out.length % 2 === 0 && i < pdfPosts.length) {
-      out.push({ post: pdfPosts[i], task: 'pdf' })
-      i += 1
-    } else if (j < profilePosts.length) {
-      out.push({ post: profilePosts[j], task: 'profile' })
-      j += 1
-    } else if (i < pdfPosts.length) {
-      out.push({ post: pdfPosts[i], task: 'pdf' })
-      i += 1
-    } else {
-      break
-    }
-  }
-  return out
-}
-
-function mergeLatest(pdfPosts: SitePost[], profilePosts: SitePost[]): PostWithTask[] {
-  const combined: PostWithTask[] = [
-    ...pdfPosts.map((post) => ({ post, task: 'pdf' as const })),
-    ...profilePosts.map((post) => ({ post, task: 'profile' as const })),
-  ]
-  combined.sort((a, b) => {
-    const ta = new Date(a.post.publishedAt || a.post.createdAt || 0).getTime()
-    const tb = new Date(b.post.publishedAt || b.post.createdAt || 0).getTime()
-    return tb - ta
-  })
-  return combined.slice(0, 4)
-}
+type PostWithTask = { post: SitePost; task: 'pdf' }
 
 export async function HomePageOverride() {
-  const [pdfPosts, profilePosts] = await Promise.all([
-    fetchTaskPosts('pdf', 8, { allowMockFallback: true, fresh: true }),
-    fetchTaskPosts('profile', 8, { allowMockFallback: true, fresh: true }),
-  ])
+  const pdfPosts = await fetchTaskPosts('pdf', 8, { allowMockFallback: true, fresh: true })
 
-  const featured = mergeFeatured(pdfPosts, profilePosts)
-  const latest = mergeLatest(pdfPosts, profilePosts)
+  const featured: PostWithTask[] = pdfPosts.slice(0, 4).map((post) => ({ post, task: 'pdf' }))
+  const latest: PostWithTask[] = [...pdfPosts]
+    .sort((a, b) => {
+      const ta = new Date(a.publishedAt || a.createdAt || 0).getTime()
+      const tb = new Date(b.publishedAt || b.createdAt || 0).getTime()
+      return tb - ta
+    })
+    .slice(0, 4)
+    .map((post) => ({ post, task: 'pdf' as const }))
 
   const schemaData = [
     {
