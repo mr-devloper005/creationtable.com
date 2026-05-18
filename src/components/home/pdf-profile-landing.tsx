@@ -1,24 +1,26 @@
 import Link from 'next/link'
 import {
   ArrowRight,
+  BookOpen,
   Check,
+  ClipboardList,
   Download,
   Eye,
   FileText,
-  Quote,
+  FolderOpen,
+  Newspaper,
   Search,
+  ShieldCheck,
   Sparkles,
   Star,
-  UserRound,
 } from 'lucide-react'
 import type { SitePost } from '@/lib/site-connector'
 import { buildPostUrl } from '@/lib/task-data'
-import type { TaskKey } from '@/lib/site-config'
 import { ContentImage } from '@/components/shared/content-image'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { Button } from '@/components/ui/button'
 
-type PostWithTask = { post: SitePost; task: TaskKey }
+type PostWithTask = { post: SitePost; task: 'pdf' }
 
 function getPostImage(post: SitePost) {
   const media = Array.isArray(post?.media) ? post?.media : []
@@ -56,19 +58,19 @@ function StarRow({ rating = 4.8 }: { rating?: number }) {
 export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask[]; latest: PostWithTask[] }) {
   const resourceTypes = [
     { label: 'Medical & health PDFs', icon: FileText, hint: 'Clinical summaries, consent packs' },
-    { label: 'Tech profiles', icon: UserRound, hint: 'Engineers, PMs, researchers' },
     { label: 'Compliance PDFs', icon: FileText, hint: 'Policies, audit-ready exports' },
     { label: 'Educational guides', icon: FileText, hint: 'Workbooks and syllabi' },
-    { label: 'Executive profiles', icon: UserRound, hint: 'Leadership bios and decks' },
     { label: 'Research papers', icon: FileText, hint: 'Preprints and whitepapers' },
+    { label: 'Templates & forms', icon: FileText, hint: 'Ready-to-use documents' },
+    { label: 'Industry briefings', icon: FileText, hint: 'Curated weekly summaries' },
   ]
 
   const categories = [
-    { title: 'Featured PDF packs', count: '200+ resources', href: '/pdf', gradient: 'from-teal-700 via-teal-600 to-cyan-500' },
-    { title: 'Professional profiles', count: 'Top-rated experts', href: '/profile', gradient: 'from-slate-800 to-teal-900' },
-    { title: 'Templates & forms', count: 'Ready to download', href: '/pdf', gradient: 'from-teal-900 to-slate-900' },
-    { title: 'Industry briefings', count: 'Curated weekly', href: '/pdf', gradient: 'from-cyan-800 to-teal-800' },
-    { title: 'Portfolio profiles', count: 'Design & product', href: '/profile', gradient: 'from-emerald-900 to-teal-800' },
+    { title: 'Featured PDF packs', count: '200+ resources', href: '/pdf', gradient: 'from-teal-700 via-teal-600 to-cyan-500', icon: FolderOpen },
+    { title: 'Templates & forms', count: 'Ready to download', href: '/pdf', gradient: 'from-teal-900 to-slate-900', icon: ClipboardList },
+    { title: 'Industry briefings', count: 'Curated weekly', href: '/pdf', gradient: 'from-cyan-800 to-teal-800', icon: Newspaper },
+    { title: 'Research papers', count: 'Academic & whitepapers', href: '/pdf', gradient: 'from-emerald-900 to-teal-800', icon: BookOpen },
+    { title: 'Compliance packs', count: 'Audit-ready exports', href: '/pdf', gradient: 'from-slate-800 to-teal-900', icon: ShieldCheck },
   ]
 
   return (
@@ -79,13 +81,13 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
           <div className="mx-auto max-w-3xl text-center">
             <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-teal-100">
               <Sparkles className="h-3.5 w-3.5" />
-              PDF library + expert profiles
+              PDF library
             </p>
             <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-              Find essential PDFs and trusted professional profiles in one place
+              Find essential PDFs in one place
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-teal-100/90 sm:text-lg">
-              Search curated documents, preview what matters, and connect with people behind the work—without wading through unrelated listings or feeds.
+              Search curated documents, preview what matters, and download what you need—without wading through unrelated listings or feeds.
             </p>
           </div>
 
@@ -101,7 +103,7 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
                 id="home-q"
                 name="q"
                 type="search"
-                placeholder="Search for PDFs, topics, or people…"
+                placeholder="Search for PDFs and topics…"
                 className="h-11 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
               />
             </div>
@@ -115,7 +117,6 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
               >
                 <option value="">All types</option>
                 <option value="pdf">PDFs only</option>
-                <option value="profile">Profiles only</option>
               </select>
             </div>
             <Button type="submit" className="h-11 shrink-0 rounded-xl bg-teal-600 px-8 text-sm font-semibold text-white hover:bg-teal-500 sm:h-auto sm:self-stretch">
@@ -128,13 +129,13 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">How it works</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-600">A simple path from discovery to download or connection.</p>
+          <p className="mx-auto mt-3 max-w-2xl text-slate-600">A simple path from discovery to download.</p>
         </div>
         <div className="mt-12 grid gap-8 md:grid-cols-3">
           {[
-            { step: '1', title: 'Search', body: 'Filter by document type or profile focus to narrow results fast.', icon: Search },
+            { step: '1', title: 'Search', body: 'Filter by document type to narrow results fast.', icon: Search },
             { step: '2', title: 'Preview', body: 'Scan summaries, ratings, and metadata before you commit time.', icon: Eye },
-            { step: '3', title: 'Download or connect', body: 'Grab the PDF you need or open a profile to go deeper.', icon: Download },
+            { step: '3', title: 'Download', body: 'Grab the PDF you need and start using it.', icon: Download },
           ].map((item) => (
             <div key={item.step} className="rounded-2xl border border-slate-100 bg-slate-50/80 p-8 text-center shadow-sm">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-600 text-white shadow-md shadow-teal-600/25">
@@ -144,52 +145,6 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.body}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="border-y border-slate-100 bg-slate-50/50">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            <div className="relative col-span-2 aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br from-teal-700 to-cyan-600 shadow-lg">
-              <ContentImage src="/og-default.png" alt="Document library preview" fill className="object-cover opacity-90 mix-blend-luminosity" />
-              <div className="absolute inset-0 bg-gradient-to-t from-teal-950/70 to-transparent" />
-              <p className="absolute bottom-4 left-4 text-lg font-semibold text-white">Curated PDF library</p>
-            </div>
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-teal-800 shadow-md">
-              <ContentImage src="/placeholder.svg?height=400&width=400" alt="Profile spotlight" fill className="object-cover" />
-            </div>
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-slate-800 shadow-md">
-              <ContentImage src="/placeholder.svg?height=400&width=400" alt="Team profiles" fill className="object-cover opacity-90" />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Discover top-rated profiles</h2>
-            <p className="mt-4 text-slate-600 leading-relaxed">
-              Pair authoritative PDFs with the people who produce them. Every profile is structured for clarity—roles, focus areas, and downloadable work samples when available.
-            </p>
-            <ul className="mt-8 space-y-4">
-              {[
-                'Structured bios with skills, industries, and credibility cues',
-                'Linked PDFs and resources from the same author or team',
-                'Lightweight ratings so quality surfaces without noisy feeds',
-                'Consistent preview cards across PDFs and profiles',
-              ].map((line) => (
-                <li key={line} className="flex gap-3 text-sm text-slate-700">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-teal-100 text-teal-700">
-                    <Check className="h-3.5 w-3.5" />
-                  </span>
-                  {line}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/profile"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-teal-600/25 transition hover:bg-teal-500"
-            >
-              Browse profiles
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -204,32 +159,42 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
           </Link>
         </div>
         <div className="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1fr)] lg:items-stretch">
-          <Link
-            href={categories[0].href}
-            className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-3xl p-8 text-white shadow-lg transition hover:scale-[1.01] hover:shadow-xl lg:min-h-[420px]"
-          >
-            <div className={`absolute inset-0 bg-gradient-to-br ${categories[0].gradient}`} />
-            <div className="absolute inset-0 bg-black/20 transition group-hover:bg-black/10" />
-            <div className="relative">
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/80">{categories[0].count}</p>
-              <h3 className="mt-2 text-2xl font-bold">{categories[0].title}</h3>
-            </div>
-          </Link>
-          <div className="grid grid-cols-2 gap-4">
-            {categories.slice(1).map((cat) => (
+          {(() => {
+            const CatIcon = categories[0].icon
+            return (
               <Link
-                key={cat.title}
-                href={cat.href}
-                className="group relative flex min-h-[160px] flex-col justify-end overflow-hidden rounded-3xl p-5 text-white shadow-md transition hover:scale-[1.01] hover:shadow-xl sm:min-h-[190px]"
+                href={categories[0].href}
+                className="group relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-3xl p-8 text-white shadow-lg transition hover:scale-[1.01] hover:shadow-xl lg:min-h-[420px]"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient}`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${categories[0].gradient}`} />
                 <div className="absolute inset-0 bg-black/20 transition group-hover:bg-black/10" />
                 <div className="relative">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-white/80">{cat.count}</p>
-                  <h3 className="mt-1 text-base font-bold leading-snug">{cat.title}</h3>
+                  <CatIcon className="mb-4 h-10 w-10 text-white/70" />
+                  <p className="text-xs font-semibold uppercase tracking-widest text-white/80">{categories[0].count}</p>
+                  <h3 className="mt-2 text-2xl font-bold">{categories[0].title}</h3>
                 </div>
               </Link>
-            ))}
+            )
+          })()}
+          <div className="grid grid-cols-2 gap-4">
+            {categories.slice(1).map((cat) => {
+              const SmallIcon = cat.icon
+              return (
+                <Link
+                  key={cat.title}
+                  href={cat.href}
+                  className="group relative flex min-h-[160px] flex-col justify-end overflow-hidden rounded-3xl p-5 text-white shadow-md transition hover:scale-[1.01] hover:shadow-xl sm:min-h-[190px]"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient}`} />
+                  <div className="absolute inset-0 bg-black/20 transition group-hover:bg-black/10" />
+                  <div className="relative">
+                    <SmallIcon className="mb-3 h-7 w-7 text-white/70" />
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-white/80">{cat.count}</p>
+                    <h3 className="mt-1 text-base font-bold leading-snug">{cat.title}</h3>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -237,7 +202,7 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
       <section className="bg-slate-50 py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center text-2xl font-bold text-slate-900 sm:text-3xl">Resource types</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-600">Pick a lane to explore—everything here stays focused on documents and people.</p>
+          <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-600">Pick a lane to explore—everything here stays focused on documents.</p>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {resourceTypes.map((t) => (
               <div
@@ -260,16 +225,15 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Featured PDFs & profiles</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Featured PDFs</h2>
             <p className="mt-2 text-slate-600">A live slice from your library—swap in production content anytime.</p>
           </div>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featured.length === 0 ? (
             <p className="col-span-full rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-12 text-center text-sm text-slate-600">
-              New PDFs and profiles will appear here once your catalog syncs. Open the{' '}
-              <Link className="font-semibold text-teal-700 underline" href="/pdf">PDF library</Link> or{' '}
-              <Link className="font-semibold text-teal-700 underline" href="/profile">profiles</Link> to browse now.
+              New PDFs will appear here once your catalog syncs. Open the{' '}
+              <Link className="font-semibold text-teal-700 underline" href="/pdf">PDF library</Link> to browse now.
             </p>
           ) : null}
           {featured.map(({ post, task }) => (
@@ -277,7 +241,7 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
               <Link href={buildPostUrl(task, post.slug)} className="relative block aspect-[4/3] overflow-hidden bg-slate-100">
                 <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
                 <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-teal-800">
-                  {task === 'pdf' ? 'PDF' : 'Profile'}
+                  PDF
                 </span>
               </Link>
               <div className="flex flex-1 flex-col p-4">
@@ -288,10 +252,10 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
                   </Link>
                 </h3>
                 <p className="mt-1 line-clamp-2 text-xs text-slate-500">
-                  {post.summary || (task === 'pdf' ? 'Downloadable resource' : 'Public profile')}
+                  {post.summary || 'Downloadable resource'}
                 </p>
                 <div className="mt-auto flex items-center justify-between pt-4">
-                  <span className="text-xs text-slate-400">{task === 'pdf' ? 'PDF' : 'Profile page'}</span>
+                  <span className="text-xs text-slate-400">PDF</span>
                   <Button size="sm" variant="outline" className="rounded-full border-teal-200 text-teal-800 hover:bg-teal-50" asChild>
                     <Link href={buildPostUrl(task, post.slug)}>View</Link>
                   </Button>
@@ -304,9 +268,6 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
           <Button asChild variant="outline" className="rounded-full border-slate-200 px-6">
             <Link href="/pdf">View all PDFs</Link>
           </Button>
-          <Button asChild className="rounded-full bg-teal-600 px-6 hover:bg-teal-500">
-            <Link href="/profile">View all profiles</Link>
-          </Button>
         </div>
       </section>
 
@@ -315,7 +276,7 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
           <div>
             <h2 className="text-2xl font-bold sm:text-3xl">Ready to explore the library?</h2>
             <p className="mt-3 max-w-lg text-sm leading-relaxed text-teal-100">
-              Jump back into search, open a featured PDF, or browse profiles to find the right collaborator.
+              Jump back into search or open a featured PDF from the library.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -340,23 +301,6 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
             <div className="absolute bottom-0 right-24 -rotate-6 overflow-hidden rounded-2xl border-4 border-white/30 shadow-lg h-36 w-48">
               <ContentImage src="/og-default.png" alt="" fill className="object-cover" />
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-slate-100 bg-white py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8">
-          <div className="relative mx-auto aspect-[3/4] max-w-sm overflow-hidden rounded-3xl bg-slate-200 shadow-xl lg:mx-0">
-            <ContentImage src="/placeholder.svg?height=900&width=700" alt="Member portrait" fill className="object-cover" />
-          </div>
-          <div>
-            <Quote className="h-12 w-12 text-teal-200" />
-            <StarRow rating={5} />
-            <blockquote className="mt-6 text-xl font-medium leading-relaxed text-slate-900 sm:text-2xl">
-              We retired three different tools once PDFs and expert profiles lived in the same search experience. Discovery is faster and the handoffs are cleaner.
-            </blockquote>
-            <p className="mt-6 text-sm font-semibold text-slate-900">David Morgan</p>
-            <p className="text-sm text-slate-500">Research lead, {SITE_CONFIG.name}</p>
           </div>
         </div>
       </section>
@@ -388,7 +332,7 @@ export function PdfProfileLanding({ featured, latest }: { featured: PostWithTask
                     </Link>
                   </h3>
                   <Link href={buildPostUrl(task, post.slug)} className="mt-3 inline-flex text-sm font-semibold text-teal-700 hover:underline">
-                    {task === 'pdf' ? 'Download now' : 'View profile'}
+                    Download now
                   </Link>
                 </div>
               </article>

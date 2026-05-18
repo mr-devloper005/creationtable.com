@@ -2,16 +2,8 @@ import Link from 'next/link'
 import { PageShell } from '@/components/shared/page-shell'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { FileText, Shield, Sparkles, UserRound } from 'lucide-react'
-import { mockTeamMembers } from '@/data/mock-data'
+import { FileText, Shield, Sparkles } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
-
-const highlights = [
-  { label: 'PDF resources indexed', value: '2.4k+' },
-  { label: 'Expert profiles', value: '860+' },
-  { label: 'Monthly downloads', value: '41k' },
-]
 
 const values = [
   {
@@ -19,12 +11,12 @@ const values = [
     description: 'Every PDF surface is built for clear titles, summaries, and file context so teams know what they are opening before they commit.',
   },
   {
-    title: 'People, not noise',
-    description: 'Profiles highlight expertise and credibility—so you connect with the right author, reviewer, or specialist for the work.',
+    title: 'Search-first discovery',
+    description: 'Titles, topics, and tags are optimized for fast search—so the right document surfaces without endless scrolling.',
   },
   {
     title: 'One calm workspace',
-    description: 'PDFs and profiles live in the same visual language: teal gradients, rounded cards, and search-first flows that match the homepage.',
+    description: 'Teal gradients, rounded cards, and clean flows make browsing PDFs lightweight and readable at any scale.',
   },
 ]
 
@@ -33,7 +25,7 @@ export default function AboutPage() {
     <PageShell
       variant="teal"
       title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a focused library for downloadable PDFs and public professional profiles—built for discovery without unrelated feeds or clutter.`}
+      description={`${SITE_CONFIG.name} is a focused library for downloadable PDFs—built for discovery without unrelated feeds or clutter.`}
       actions={
         <>
           <Button variant="secondary" className="rounded-full border-0 bg-white/15 text-white hover:bg-white/25" asChild>
@@ -53,24 +45,16 @@ export default function AboutPage() {
               Our story
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              A single place for essential files and the people behind them.
+              A single place for essential files.
             </h2>
             <p className="text-sm leading-relaxed text-slate-600">
-              We built {SITE_CONFIG.name} because document libraries and profile directories too often sit in different products—or get buried inside generic social feeds. Here, PDFs and profiles share navigation, search, and design so researchers, operators, and hiring teams can move faster with less context switching.
+              We built {SITE_CONFIG.name} because document libraries too often get buried inside generic social feeds or bloated platforms. Here, PDFs are the focus—organized for preview and download with consistent metadata, clear search, and a calm visual experience that keeps discovery fast.
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-2xl border border-teal-100 bg-gradient-to-br from-teal-50 to-white p-4 text-center shadow-sm">
-                  <div className="text-2xl font-bold text-teal-900">{item.value}</div>
-                  <div className="mt-1 text-xs font-medium text-slate-600">{item.label}</div>
-                </div>
-              ))}
-            </div>
           </CardContent>
         </Card>
 
         <div className="flex flex-col gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4">
             <Card className="rounded-3xl border border-teal-100 bg-white shadow-sm">
               <CardContent className="p-6">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-600 text-white">
@@ -82,17 +66,6 @@ export default function AboutPage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="rounded-3xl border border-teal-100 bg-white shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-teal-800 text-white">
-                  <UserRound className="h-5 w-5" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-slate-900">Profiles</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Structured bios, focus areas, and links to published work—so you always know who you are learning from.
-                </p>
-              </CardContent>
-            </Card>
           </div>
           <Card className="rounded-3xl border border-teal-900/10 bg-gradient-to-br from-teal-900 to-teal-700 text-white shadow-lg">
             <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -101,7 +74,7 @@ export default function AboutPage() {
                 <div>
                   <p className="font-semibold">Quality & safety</p>
                   <p className="mt-1 text-sm text-teal-100/90">
-                    We prioritize clear sourcing, respectful public profiles, and tooling that keeps discovery readable at scale.
+                    We prioritize clear sourcing, structured metadata, and tooling that keeps discovery readable at scale.
                   </p>
                 </div>
               </div>
@@ -110,35 +83,6 @@ export default function AboutPage() {
               </Button>
             </CardContent>
           </Card>
-        </div>
-      </div>
-
-      <div className="mt-14">
-        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="text-2xl font-bold text-slate-900">Leadership & product</h2>
-          <Button variant="outline" className="w-fit rounded-full border-teal-200 text-teal-800 hover:bg-teal-50" asChild>
-            <Link href="/team">View full team</Link>
-          </Button>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {mockTeamMembers.map((member) => (
-            <Card key={member.id} className="rounded-3xl border border-teal-100 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-12 w-12 border border-teal-100">
-                    <AvatarImage src={member.avatar} alt={member.name} />
-                    <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">{member.name}</p>
-                    <p className="text-xs text-teal-800/80">{member.role}</p>
-                  </div>
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{member.bio}</p>
-                <p className="mt-3 text-xs text-slate-400">{member.location}</p>
-              </CardContent>
-            </Card>
-          ))}
         </div>
       </div>
 

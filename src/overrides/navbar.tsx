@@ -7,12 +7,10 @@ import { LayoutDashboard, Menu, Search, X } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { siteContent } from '@/config/site.content'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/auth-context'
 
 const NavbarAuthControls = dynamic(() => import('@/components/shared/navbar-auth-controls').then((mod) => mod.NavbarAuthControls), {
-  ssr: false,
   loading: () => null,
 })
 
@@ -21,7 +19,6 @@ export const NAVBAR_OVERRIDE_ENABLED = true
 const mainNav = [
   { label: 'Home', href: '/' },
   { label: 'PDF library', href: '/pdf' },
-  { label: 'Profiles', href: '/profile' },
   { label: 'About', href: '/about' },
   { label: 'Help', href: '/help' },
 ]
@@ -35,12 +32,11 @@ export function NavbarOverride() {
     <header className="sticky top-0 z-50 w-full border-b border-teal-800/30 bg-gradient-to-r from-teal-950 via-teal-900 to-teal-800 text-white shadow-md shadow-teal-950/20 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
         <Link href="/" className="flex min-w-0 shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
-          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white/10 p-1 sm:h-11 sm:w-11">
+          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl bg-white/10 p-1 sm:h-11 sm:w-11">
             <img src="/favicon.png?v=20260421" alt="" width={44} height={44} className="h-full w-full object-contain" />
           </div>
           <div className="min-w-0">
             <span className="block truncate text-lg font-semibold sm:text-xl">{SITE_CONFIG.name}</span>
-            <span className="hidden text-[10px] font-medium uppercase tracking-[0.2em] text-teal-200/90 sm:block">{siteContent.navbar.tagline}</span>
           </div>
         </Link>
 
@@ -65,7 +61,7 @@ export function NavbarOverride() {
         <div className="hidden max-w-xs flex-1 px-4 md:block lg:max-w-md">
           <form action="/search" method="get" className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2">
             <Search className="h-4 w-4 shrink-0 text-teal-100" />
-            <input name="q" className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-teal-200/70" placeholder="Search PDFs & profiles…" />
+            <input name="q" className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-teal-200/70" placeholder="Search PDFs…" />
           </form>
         </div>
 
