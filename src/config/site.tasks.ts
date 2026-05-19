@@ -26,10 +26,10 @@ export const siteTaskDefinitions = [
   {
     key: 'image',
     label: 'Image',
-    route: '/image',
+    route: '/images',
     description: 'Galleries and media-first posts.',
     contentType: 'image',
-    enabled: false,
+    enabled: true,
   },
   {
   key: 'profile',
@@ -77,7 +77,7 @@ export const siteTaskViews = {
   listing: '/listing',
   classified: '/classified',
   article: '/article',
-  image: '/image',
+  image: '/images',
   profile: '/profile',
   social: '/community',
   sbm: '/sbm',
